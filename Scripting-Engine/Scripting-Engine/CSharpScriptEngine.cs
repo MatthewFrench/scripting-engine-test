@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace Scripting_Engine
 {
-    class Program
+    class CSharpScriptEngine
     {
-        static void Main(string[] args)
-        {
-
-        }
     }
 }
