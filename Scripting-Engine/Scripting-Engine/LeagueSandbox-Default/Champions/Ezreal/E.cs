@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
 using LeagueSandbox.GameServer.Logic.GameObjects;
+using LeagueSandbox.GameServer.Logic.API;
 
 namespace Ezreal
 {
@@ -12,7 +13,7 @@ namespace Ezreal
     {
         static void onStartCasting()
         {
-
+            
         }
 
         static void onFinishCasting(Champion owner, Spell spell)
@@ -22,54 +23,44 @@ namespace Ezreal
             Vector2 trueCoords;
 
             if (to.Length() > 475) {
-                //to = to.Normalize()
-                //local range = to * 475
-                //trueCoords = current:copy() + range
-            } else {
-                trueCoords = new Vector2(spell.X, spell.Y);
-             }
-            /*
-
-    if to:length() > 475 then
-        to = to:normalize()
-                local range = to * 475
-                trueCoords = current:copy() + range
+                to = Vector2.Normalize(to);
+                Vector2 range = to * 475;
+                trueCoords = current + range;
+            }
             else
-        trueCoords = Vector2:new(spell.X, spell.Y)
-            end
-        
-    addParticle(owner, "Ezreal_arcaneshift_cas.troy", owner.X, owner.Y);
-            teleportTo(owner, trueCoords.x, trueCoords.y)
-            addParticleTarget(owner, "Ezreal_arcaneshift_flash.troy", owner);
+            {
+                trueCoords = new Vector2(spell.X, spell.Y);
+            }
+            ApiFunctionManager.AddParticle(owner, "Ezreal_arcaneshift_cas.troy", owner.X, owner.Y);
+            spell.Teleport(owner, trueCoords.X, trueCoords.Y);
+            ApiFunctionManager.AddParticleTarget(owner, "Ezreal_arcaneshift_flash.troy", owner );
+            Unit target = null;
+            List<Unit> units = ApiFunctionManager.GetUnitsInRange(owner, 700, true);
 
-            local target = nil
-            local units = getUnitsInRange(owner, 700, true)
-        
-
-    for i = 0, units.Count - 1 do
-                    value = units[i]
-     
-             local distance = 700
-                if owner.Team ~= value.Team then
-                    if Vector2:new(trueCoords.x, trueCoords.y):distance(Vector2: new(value.X, value.Y)) <= distance then
-                 target = value
-                        distance = Vector2:new(trueCoords.x, trueCoords.y):distance(Vector2: new(value.X, value.Y))
-                    end
-        end
-            end
-            if (target) and(not unitIsTurret(target)) then
-               addProjectileTarget("EzrealArcaneShiftMissile", target)
-            end
-            */
+            for(int i = 0; i < units.Count; i++)
+            {
+                Unit value = units[i];
+                float distance = 700;
+                if(owner.Team != value.Team)
+                {
+                    if(Vector2.Distance(new Vector2(trueCoords.X, trueCoords.Y), new Vector2(value.X, value.Y)) <= distance)
+                    {
+                        target = value;
+                        distance = Vector2.Distance(new Vector2(trueCoords.X, trueCoords.Y), new Vector2(value.X, value.Y));
+                    }
+                }
+            }
+            if(!ApiFunctionManager.UnitIsTurret(target))
+            {
+                spell.AddProjectileTarget("EzrealArcaneShiftMissile", target);
+            }
         }
 
 
-        static void applyEffects()
+        static void applyEffects(Champion owner, Unit target, Spell spell, Projectile projectile)
         {
-            /*
-            dealMagicalDamage(25 + spellLevel * 50 + owner:GetStats().AbilityPower.Total * 0.75)
-            destroyProjectile()
-            */
+            owner.dealDamageTo(target, 25f + spell.Level * 50f + owner.GetStats().AbilityPower.Total * 0.75f, DamageType.DAMAGE_TYPE_MAGICAL, DamageSource.DAMAGE_SOURCE_SPELL, false);
+            projectile.setToRemove();
         }
 
         static void onUpdate(double diff) { }
