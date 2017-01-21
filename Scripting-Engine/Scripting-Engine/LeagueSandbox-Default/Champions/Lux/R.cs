@@ -23,13 +23,10 @@ namespace Lux
             spell.spellAnimation("SPELL4", owner);
             ApiFunctionManager.AddParticleTarget(owner, "LuxMaliceCannon_cas.troy", owner);
         }
-        static void onFinishCasting()
-        {
-
-        }
+        static void onFinishCasting() { }
         static void applyEffects(Champion owner, Spell spell)
         {
-            owner.dealDamageTo(spell.Target, (200f + spell.Level * 100f + owner.GetStats().AbilityPower.Total * 0.75f, DamageType.DAMAGE_TYPE_MAGICAL, DamageSource.DAMAGE_SOURCE_SPELL, false);
+            owner.dealDamageTo(spell.Target, 200f + spell.Level * 100f + owner.GetStats().AbilityPower.Total * 0.75f, DamageType.DAMAGE_TYPE_MAGICAL, DamageSource.DAMAGE_SOURCE_SPELL, false);
         }
         static void onUpdate(double diff) { }
     }
