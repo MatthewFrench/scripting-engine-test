@@ -6,25 +6,22 @@ using System.Threading.Tasks;
 using System.Numerics;
 using LeagueSandbox.GameServer.Logic.GameObjects;
 using LeagueSandbox.GameServer.Logic.API;
+
 namespace Lucian
 {
     class E
     {
-        static void onStartCasting()
+        static void onStartCasting(Champion owner) { }
+        static void onFinishCasting(Champion owner, Spell spell)
         {
-        
+            Vector2 current = new Vector2(owner.X, owner.Y);
+            Vector2 to = Vector2.Normalize(new Vector2(spell.X, spell.Y) - current);
+            Vector2 range = to * 445;
+            Vector2 trueCoords = current + range;
+
+            spell.dashToLocation(owner, trueCoords.x, trueCoords.y, 1500, false, "SPELL3");
         }
-        static void onFinishCasting()
-        {
-        
-        }
-        static void applyEffects()
-        {
-        
-        }
-        static void onUpdate(double diff)
-        {
-        
-        }
+        static void applyEffects(Champion owner, Spell spell, Projectile projectile){ }
+        static void onUpdate(double diff) { }
     }
 }
