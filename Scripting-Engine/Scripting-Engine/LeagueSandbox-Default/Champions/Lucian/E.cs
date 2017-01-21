@@ -9,7 +9,7 @@ using LeagueSandbox.GameServer.Logic.API;
 
 namespace Lucian
 {
-    class W
+    class E
     {
         static void onStartCasting(Champion owner) { }
         static void onFinishCasting(Champion owner, Spell spell)
