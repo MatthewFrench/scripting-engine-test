@@ -37,9 +37,8 @@ namespace Ezreal
             Unit target = null;
             List<Unit> units = ApiFunctionManager.GetUnitsInRange(owner, 700, true);
 
-            for(int i = 0; i < units.Count; i++)
+            foreach(Unit value in units)
             {
-                Unit value = units[i];
                 float distance = 700;
                 if(owner.Team != value.Team)
                 {
