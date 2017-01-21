@@ -148,7 +148,18 @@
   <ItemGroup>
     <Compile Include="CSharpScriptEngine.cs" />
     <Compile Include="IScriptEngine.cs" />
+    <Compile Include="LeagueSandbox-Default\Buffs\Quickdraw\Quickdraw.cs" />
+    <Compile Include="LeagueSandbox-Default\Champions\Annie\Q.cs" />
+    <Compile Include="LeagueSandbox-Default\Champions\Blitzcrank\Q.cs" />
     <Compile Include="LeagueSandbox-Default\Champions\Ezreal\E.cs" />
+    <Compile Include="LeagueSandbox-Default\Champions\Ezreal\Passive.cs" />
+    <Compile Include="LeagueSandbox-Default\Champions\Ezreal\Q.cs" />
+    <Compile Include="LeagueSandbox-Default\Champions\Ezreal\R.cs" />
+    <Compile Include="LeagueSandbox-Default\Champions\Ezreal\W.cs" />
+    <Compile Include="LeagueSandbox-Default\Champions\Gangplank\Q.cs" />
+    <Compile Include="LeagueSandbox-Default\Champions\Graves\E.cs" />
+    <Compile Include="LeagueSandbox-Default\Champions\Lucian\Q.cs" />
+    <Compile Include="LeagueSandbox-Default\Champions\Lux\R.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
