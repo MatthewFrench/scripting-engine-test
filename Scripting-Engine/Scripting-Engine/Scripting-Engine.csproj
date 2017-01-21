@@ -158,6 +158,7 @@
     <Compile Include="LeagueSandbox-Default\Champions\Gangplank\Q.cs" />
     <Compile Include="LeagueSandbox-Default\Champions\Graves\E.cs" />
     <Compile Include="LeagueSandbox-Default\Champions\Lucian\Q.cs" />
+    <Compile Include="LeagueSandbox-Default\Champions\Lux\R.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
