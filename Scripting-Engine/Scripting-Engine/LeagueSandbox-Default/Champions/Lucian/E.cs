@@ -19,7 +19,7 @@ namespace Lucian
             Vector2 range = to * 445;
             Vector2 trueCoords = current + range;
 
-            dashToLocation(owner, trueCoords.x, trueCoords.y, 1500, false, "SPELL3");
+            spell.dashToLocation(owner, trueCoords.x, trueCoords.y, 1500, false, "SPELL3");
         }
         static void applyEffects(Champion owner, Spell spell, Projectile projectile){ }
         static void onUpdate(double diff) { }
