@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using System.Numerics;
 using LeagueSandbox.GameServer.Logic.GameObjects;
 using LeagueSandbox.GameServer.Logic.API;
-namespace Ezreal
+namespace Poppy
 {
-    class W
+    class Passive
     {
         static void onStartCasting()
         {

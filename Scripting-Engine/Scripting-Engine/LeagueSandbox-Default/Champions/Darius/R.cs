@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using System.Numerics;
 using LeagueSandbox.GameServer.Logic.GameObjects;
 using LeagueSandbox.GameServer.Logic.API;
-namespace Ezreal
+namespace Darius
 {
-    class W
+    class R
     {
         static void onStartCasting()
         {
