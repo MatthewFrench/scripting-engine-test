@@ -13,7 +13,9 @@ namespace Scripting_Engine
             CSharpScriptEngine scriptingEngine = new CSharpScriptEngine();
             scriptingEngine.prepareCompiler();
 
-            scriptingEngine.load("LeagueSandbox-Default/Champions/Ezreal/Q.cs");
+            scriptingEngine.load(new List<String>{ "LeagueSandbox-Default/Champions/Ezreal/Q.cs" });
+
+            scriptingEngine.runFunction("Ezreal", "Q", "onUpdate", new object[] { 50.0 });
 
             Console.ReadKey();
         }

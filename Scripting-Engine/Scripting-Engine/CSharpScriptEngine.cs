@@ -15,12 +15,14 @@ namespace Scripting_Engine
 {
     public class CSharpScriptEngine
     {
+        Assembly scriptAssembly = null;
         public CSharpScriptEngine()
         {
         }
         //Compile example assembly to load all the compiler resources, takes 1700 milliseconds first time
         public void prepareCompiler()
         {
+            Benchmark.StartTiming("Prepare Compiler");
             SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(@"
             using System;
 
@@ -30,7 +32,7 @@ namespace Scripting_Engine
                 {
                     public void LoadCompilerFunction(string message)
                     {
-                        Console.WriteLine(message);
+                        Benchmark.Log(message);
                     }
                 }
             }");
@@ -49,22 +51,30 @@ namespace Scripting_Engine
 
             using (var ms = new MemoryStream())
             {
-
-                Benchmark.StartTiming("Load Compiler");
-                EmitResult result = compilation.Emit(ms);
-                Benchmark.EndTiming("Load Compiler");
+                using (var pdb = new MemoryStream())
+                {
+                    EmitResult result = compilation.Emit(ms, pdb);
+                }
             }
+            Benchmark.EndTiming("Prepare Compiler");
         }
-        public void load(String scriptLocation)
+        //Takes about 300 milliseconds for a single script
+        public void load(List<string> scriptLocations)
         {
             Benchmark.StartTiming("Load Function");
-            String script = "";
-            using (StreamReader sr = new StreamReader(scriptLocation))
-            {
-                // Read the stream to a string, and write the string to the console.
-                script = sr.ReadToEnd();
-            }
-            Tuple<List<string>, string> scriptHoist = QuickUsings.Hoist(script);
+            StringBuilder scriptBuilder = new StringBuilder();
+            Parallel.For(0, scriptLocations.Count, (i)=> {
+                using (StreamReader sr = new StreamReader(scriptLocations[i]))
+                {
+                    // Read the stream to a string, and write the string to the console.
+                    lock(scriptBuilder)
+                    {
+                        scriptBuilder.AppendLine(sr.ReadToEnd());
+                    }
+                }
+            });
+            Benchmark.Log("Compiling script: " + scriptBuilder.ToString());
+            Tuple<List<string>, string> scriptHoist = QuickUsings.Hoist(scriptBuilder.ToString());
             SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(scriptHoist.Item2);
             string assemblyName = Path.GetRandomFileName();
             
@@ -85,43 +95,64 @@ namespace Scripting_Engine
 
             using (var ms = new MemoryStream())
             {
-                Benchmark.StartTiming("Compiled class");
-                EmitResult result = compilation.Emit(ms);
-                Benchmark.EndTiming("Compiled class");
-
-                if (!result.Success)
+                using (var pdb = new MemoryStream())
                 {
-                    IEnumerable<Diagnostic> failures = result.Diagnostics.Where(diagnostic =>
-                        diagnostic.IsWarningAsError ||
-                        diagnostic.Severity == DiagnosticSeverity.Error);
-
-                    foreach (Diagnostic diagnostic in failures)
+                    Benchmark.StartTiming("Compiled class");
+                    EmitResult result = compilation.Emit(ms, pdb);
+                    Benchmark.EndTiming("Compiled class");
+                    
+                    if (!result.Success)
                     {
-                        Console.Error.WriteLine("{0}: {1}", diagnostic.Id, diagnostic.GetMessage());
+                        IEnumerable<Diagnostic> failures = result.Diagnostics.Where(diagnostic =>
+                            diagnostic.IsWarningAsError ||
+                            diagnostic.Severity == DiagnosticSeverity.Error);
+
+                        foreach (Diagnostic diagnostic in failures)
+                        {
+                            Console.Error.WriteLine("{0}: {1}", diagnostic.Id, diagnostic.GetMessage());
+                        }
                     }
-                }
-                else
-                {
-                    ms.Seek(0, SeekOrigin.Begin);
+                    else
+                    {
+                        ms.Seek(0, SeekOrigin.Begin);
 
-                    Benchmark.StartTiming("Loaded assembly");
-                    Assembly assembly = Assembly.Load(ms.ToArray());
-                    Benchmark.EndTiming("Loaded assembly");
+                        Benchmark.StartTiming("Loaded assembly");
+                        scriptAssembly = Assembly.Load(ms.ToArray());
+                        Benchmark.EndTiming("Loaded assembly");
 
-                    /*
-                    Type type = assembly.GetType("RoslynCompileSample.Writer");
-                    object obj = Activator.CreateInstance(type);
-                    type.InvokeMember("Write",
-                        BindingFlags.Default | BindingFlags.InvokeMethod,
-                        null,
-                        obj,
-                        new object[] { "Hello World" });
-                        */
+                        /*
+                        Type type = assembly.GetType("RoslynCompileSample.Writer");
+                        object obj = Activator.CreateInstance(type);
+                        type.InvokeMember("Write",
+                            BindingFlags.Default | BindingFlags.InvokeMethod,
+                            null,
+                            obj,
+                            new object[] { "Hello World" });
+                            */
+                    }
                 }
             }
 
 
             Benchmark.EndTiming("Load Function");
         }
+        public void runFunction(String scriptNamespace, String scriptClass, String scriptFunction, params object[] args)
+        {
+            if (scriptAssembly == null) return;
+            
+            Benchmark.Log("Script type: " + scriptAssembly.GetType(scriptNamespace + "." + scriptClass).FullName);
+            foreach (MethodInfo m in scriptAssembly.GetType(scriptNamespace + "." + scriptClass).GetMethods())
+            {
+                Benchmark.Log("Method: " + m.Name);
+            }
+            Benchmark.Log("Script method: " + scriptAssembly.GetType(scriptNamespace + "." + scriptClass).GetMethod(scriptFunction, BindingFlags.Public | BindingFlags.Static).ToString());
+
+
+            Benchmark.StartTiming("Running Function");
+            scriptAssembly.GetType(scriptNamespace+"."+scriptClass).GetMethod(scriptFunction, BindingFlags.Public | BindingFlags.Static)
+                .Invoke(null, args);
+            Benchmark.EndTiming("Running Function");
+        }
+        //void RunFunction(string function, params object[] args);
     }
 }

@@ -28,5 +28,12 @@ namespace Scripting_Engine
             });
             map.Remove(label);
         }
+        static public void Log(string text)
+        {
+            Task t = Task.Factory.StartNew(() =>
+            {
+                Console.WriteLine(text);
+            });
+        }
     }
 }
