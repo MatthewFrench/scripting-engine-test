@@ -10,7 +10,12 @@ namespace Scripting_Engine
     {
         static void Main(string[] args)
         {
+            CSharpScriptEngine scriptingEngine = new CSharpScriptEngine();
+            scriptingEngine.prepareCompiler();
 
+            scriptingEngine.load("LeagueSandbox-Default/Champions/Ezreal/Q.cs");
+
+            Console.ReadKey();
         }
     }
 }
