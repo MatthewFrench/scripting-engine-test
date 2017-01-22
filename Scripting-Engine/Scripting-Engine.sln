@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scripting-Engine", "Scripti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameServerLib", "Scripting-Engine\GameServerLib\GameServerLib.csproj", "{CB004023-B938-4EC6-B036-29EE2F55CFA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeagueSandboxLua2CS", "..\..\..\Visual Studio 2015\Projects\LeagueSandboxLua2CS\LeagueSandboxLua2CS\LeagueSandboxLua2CS.csproj", "{33B61334-4D92-499D-96F8-9CDD3F68110F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeagueSandboxLua2CS", "Scripting-Engine\LeagueSandboxLua2CS\LeagueSandboxLua2CS.csproj", "{33B61334-4D92-499D-96F8-9CDD3F68110F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

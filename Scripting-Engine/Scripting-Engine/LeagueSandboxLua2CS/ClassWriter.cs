@@ -12,13 +12,14 @@ namespace LeagueSandboxLua2CS
         private List<DirectoryInfo> Champions = new List<DirectoryInfo>();
         private DirectoryInfo RootDirectory;
         private string championLocation = "";
-        public ClassWriter(string contentLocation, string classType)
+        public ClassWriter(string contentLocation, string classType, string removeFilesBeforeWriting)
         {
             championLocation = contentLocation + "\\Champions\\";
             RootDirectory = new DirectoryInfo(championLocation);
             foreach (DirectoryInfo dirinfo in RootDirectory.GetDirectories())
                 Champions.Add(dirinfo);
-            RemoveFiles();
+            if (removeFilesBeforeWriting == "true")
+                RemoveFiles();
             Write(classType);
         }
         private void RemoveFiles()
