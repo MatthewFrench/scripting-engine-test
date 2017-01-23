@@ -47,7 +47,8 @@ namespace Scripting_Engine
                 assemblyName,
                 syntaxTrees: new[] { syntaxTree },
                 references: references,
-                options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+                options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
+                .WithOptimizationLevel(OptimizationLevel.Release).WithConcurrentBuild(true));
 
             using (var ms = new MemoryStream())
             {
@@ -105,10 +106,10 @@ namespace Scripting_Engine
 
             using (var ms = new MemoryStream())
             {
-                using (var pdb = new MemoryStream())
+                //using (var pdb = new MemoryStream())
                 {
                     Benchmark.StartTiming("Compiled class");
-                    EmitResult result = compilation.Emit(ms, pdb);
+                    EmitResult result = compilation.Emit(ms);//, pdb);
                     Benchmark.EndTiming("Compiled class");
                     
                     if (!result.Success)
