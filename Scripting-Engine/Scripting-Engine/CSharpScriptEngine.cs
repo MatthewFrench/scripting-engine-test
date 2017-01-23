@@ -67,26 +67,22 @@ namespace Scripting_Engine
         //Takes about 300 milliseconds for a single script
         public void load(List<string> scriptLocations)
         {
-            StringBuilder scriptBuilder = new StringBuilder();
+
+            Benchmark.StartTiming("Script Loading");
+            List<SyntaxTree> treeList = new List<SyntaxTree>();
             Parallel.For(0, scriptLocations.Count, (i)=> {
                 using (StreamReader sr = new StreamReader(scriptLocations[i]))
                 {
                     // Read the stream to a string, and write the string to the console.
-                    lock(scriptBuilder)
+                    SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(sr.ReadToEnd());
+                    lock (treeList)
                     {
-                        scriptBuilder.AppendLine(sr.ReadToEnd());
+                        treeList.Add(syntaxTree);
                     }
                 }
             });
-
-
-            Benchmark.StartTiming("Slow Sort Time");
-            String script = SlowUsing.SortUsing(scriptBuilder.ToString());
-            Benchmark.EndTiming("Slow Sort Time");
-
-            //Tuple<List<string>, string> scriptHoist = QuickUsings.Hoist(scriptBuilder.ToString());
-
-            SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(script);
+            Benchmark.EndTiming("Script Loading");
+            
             string assemblyName = Path.GetRandomFileName();
             
             List<MetadataReference> references = new List<MetadataReference>();
@@ -101,7 +97,7 @@ namespace Scripting_Engine
                 .WithOptimizationLevel(OptimizationLevel.Release).WithConcurrentBuild(true);
             CSharpCompilation compilation = CSharpCompilation.Create(
                 assemblyName,
-                syntaxTrees: new[] { syntaxTree },
+                syntaxTrees: treeList,
                 references: references,
                 options: op);
 
