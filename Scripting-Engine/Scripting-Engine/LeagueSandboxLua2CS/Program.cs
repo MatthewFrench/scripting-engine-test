@@ -13,6 +13,7 @@ namespace LeagueSandboxLua2CS
             Console.WriteLine("LeagueSandbox-Default Location || classType(static etc....) || removeFilesBeforeWriting(true, false)");
             string[] input = Console.ReadLine().Split(' ');
             ClassWriter classWriter = new ClassWriter(input[0], input[1], input[2]);
+            classWriter.Write();
         }
     }
 }
