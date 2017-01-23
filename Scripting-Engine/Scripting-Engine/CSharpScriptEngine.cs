@@ -136,6 +136,24 @@ namespace Scripting_Engine
 
             Benchmark.EndTiming("Load Function");
         }
+        public T getStaticMethod<T>(String scriptNamespace, String scriptClass, String scriptFunction)
+        {
+            if (scriptAssembly == null) return default(T);
+
+            Type classType = scriptAssembly.GetType(scriptNamespace + "." + scriptClass);
+            MethodInfo desiredFunction = classType.GetMethod(scriptFunction, BindingFlags.Public | BindingFlags.Static);
+
+            Type typeParameterType = typeof(T);
+            return (T)((object)Delegate.CreateDelegate(typeParameterType, desiredFunction));
+        }
+        public T createObject<T>(String scriptNamespace, String scriptClass)
+        {
+            if (scriptAssembly == null) return default(T);
+
+            Type classType = scriptAssembly.GetType(scriptNamespace + "." + scriptClass);
+            return (T)Activator.CreateInstance(classType);
+        }
+        /*
         public void runFunction(String scriptNamespace, String scriptClass, String scriptFunction, params object[] args)
         {
             if (scriptAssembly == null) return;
@@ -147,12 +165,18 @@ namespace Scripting_Engine
             }
             Benchmark.Log("Script method: " + scriptAssembly.GetType(scriptNamespace + "." + scriptClass).GetMethod(scriptFunction, BindingFlags.Public | BindingFlags.Static).ToString());
 
+            Type classType = scriptAssembly.GetType(scriptNamespace + "." + scriptClass);
+            MethodInfo desiredFunction = classType.GetMethod(scriptFunction, BindingFlags.Public | BindingFlags.Static);
+            //desiredFunction.Invoke(null, args);
+
+            Action<double> functionDelegate = (Action<double>)Delegate.CreateDelegate
+                (typeof(Action<double>), desiredFunction);
 
             Benchmark.StartTiming("Running Function");
-            scriptAssembly.GetType(scriptNamespace+"."+scriptClass).GetMethod(scriptFunction, BindingFlags.Public | BindingFlags.Static)
-                .Invoke(null, args);
+            functionDelegate();
             Benchmark.EndTiming("Running Function");
         }
+        */
         //void RunFunction(string function, params object[] args);
     }
 }

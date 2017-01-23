@@ -41,5 +41,9 @@ namespace Ezreal
         public static void onUpdate(double diff) {
             Benchmark.Log("Hello Benchmark from Ezreal's Q");
         }
+        public static double fakeFunc()
+        {
+            return 5.0;
+        }
     }
 }

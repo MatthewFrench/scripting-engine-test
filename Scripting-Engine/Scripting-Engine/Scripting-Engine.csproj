@@ -162,11 +162,13 @@
     <Compile Include="Benchmark.cs" />
     <Compile Include="CSharpScriptEngine.cs" />
     <Compile Include="IScriptEngine.cs" />
+    <Compile Include="ISpellScript.cs" />
     <Compile Include="LeagueSandbox-Default\Buffs\Quickdraw\Quickdraw.cs" />
     <Compile Include="LeagueSandbox-Default\Champions\Annie\Q.cs" />
     <Compile Include="LeagueSandbox-Default\Champions\Blitzcrank\Q.cs" />
     <Compile Include="LeagueSandbox-Default\Champions\Caitlyn\Q.cs" />
     <Compile Include="LeagueSandbox-Default\Champions\Caitlyn\R.cs" />
+    <Compile Include="LeagueSandbox-Default\Champions\Ezreal\EObject.cs" />
     <Compile Include="LeagueSandbox-Default\Champions\Ezreal\E.cs" />
     <Compile Include="LeagueSandbox-Default\Champions\Ezreal\Passive.cs" />
     <Compile Include="LeagueSandbox-Default\Champions\Ezreal\Q.cs" />

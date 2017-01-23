@@ -13,9 +13,17 @@ namespace Scripting_Engine
             CSharpScriptEngine scriptingEngine = new CSharpScriptEngine();
             scriptingEngine.prepareCompiler();
 
-            scriptingEngine.load(new List<String>{ "LeagueSandbox-Default/Champions/Ezreal/Q.cs" });
+            scriptingEngine.load(new List<String>{ "LeagueSandbox-Default/Champions/Ezreal/Q.cs",
+                                                   "LeagueSandbox-Default/Champions/Ezreal/EObject.cs"});
 
-            scriptingEngine.runFunction("Ezreal", "Q", "onUpdate", new object[] { 50.0 });
+            Action<double> ezrealQOnUpdate = scriptingEngine.getStaticMethod<Action<double>>("Ezreal", "Q", "onUpdate");
+            ezrealQOnUpdate( 50.0 );
+
+            Func<double> ezrealQFakeFunction = scriptingEngine.getStaticMethod<Func<double>>("Ezreal", "Q", "fakeFunc");
+            double number = ezrealQFakeFunction();
+
+            ISpellScript ezrealEObject = scriptingEngine.createObject<ISpellScript>("Ezreal", "EObject");
+            ezrealEObject.onStartCasting(null);
 
             Console.ReadKey();
         }
