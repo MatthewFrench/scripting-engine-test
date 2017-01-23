@@ -9,20 +9,20 @@ namespace LeagueSandboxLua2CS
 {
     class ClassWriter
     {
+        private string classType, removeFilesBeforeWriting;
         private List<DirectoryInfo> Champions = new List<DirectoryInfo>();
         private DirectoryInfo RootDirectory;
         private string championLocation = "";
         public ClassWriter(string contentLocation, string classType, string removeFilesBeforeWriting)
         {
             championLocation = contentLocation + "\\Champions\\";
+            this.classType = classType;
+            this.removeFilesBeforeWriting = removeFilesBeforeWriting;
             RootDirectory = new DirectoryInfo(championLocation);
             foreach (DirectoryInfo dirinfo in RootDirectory.GetDirectories())
                 Champions.Add(dirinfo);
-            if (removeFilesBeforeWriting == "true")
-                RemoveFiles();
-            Write(classType);
         }
-        private void RemoveFiles()
+        public void RemoveFiles()
         {
             foreach(DirectoryInfo dirinfo in Champions)
             {
@@ -33,8 +33,11 @@ namespace LeagueSandboxLua2CS
                 }
             }
         }
-        private void Write(string classType)
+        public void Write()
         {
+            if (removeFilesBeforeWriting == "true")
+                RemoveFiles();
+
             StreamWriter sw;
             foreach (DirectoryInfo dirinfo in Champions)
             {
