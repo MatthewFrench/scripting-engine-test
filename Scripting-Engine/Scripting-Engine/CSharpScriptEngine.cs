@@ -78,15 +78,14 @@ namespace Scripting_Engine
                     }
                 }
             });
-            Benchmark.Log("Compiling script: " + scriptBuilder.ToString());
 
+
+            Benchmark.StartTiming("Slow Sort Time");
             String script = SlowUsing.SortUsing(scriptBuilder.ToString());
-
-            System.IO.File.WriteAllText(@"Temporary Script.txt", script);
+            Benchmark.EndTiming("Slow Sort Time");
 
             //Tuple<List<string>, string> scriptHoist = QuickUsings.Hoist(scriptBuilder.ToString());
 
-            Benchmark.Log("Hoisted script: " + script);
             SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(script);
             string assemblyName = Path.GetRandomFileName();
             
