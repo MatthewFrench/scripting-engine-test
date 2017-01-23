@@ -24,7 +24,7 @@ namespace Scripting_Engine
             stopwatch.Stop();
             Task t = Task.Factory.StartNew(() =>
             {
-                Console.WriteLine("{0} Elapsed(MS) = {1} - FPS: {2}", label, stopwatch.ElapsedMilliseconds, 1000.0 / stopwatch.ElapsedMilliseconds);
+                Console.WriteLine("{0} Elapsed(MS) = {1} - FPS: {2}", label, stopwatch.Elapsed.TotalMilliseconds, 1000.0 / stopwatch.Elapsed.TotalMilliseconds);
             });
             map.Remove(label);
         }

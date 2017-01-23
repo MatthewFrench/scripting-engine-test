@@ -58,6 +58,11 @@ namespace Scripting_Engine
             }
             Benchmark.EndTiming("Prepare Compiler");
         }
+        public void loadSubdirectoryScripts(String folder)
+        {
+            String[] allfiles = System.IO.Directory.GetFiles(folder, "*.cs", System.IO.SearchOption.AllDirectories);
+            load(new List<string>(allfiles));
+        }
         //Takes about 300 milliseconds for a single script
         public void load(List<string> scriptLocations)
         {
@@ -150,7 +155,11 @@ namespace Scripting_Engine
         {
             if (scriptAssembly == null) return default(T);
 
+
+            Benchmark.StartTiming("Script Assembly Type Lookup");
             Type classType = scriptAssembly.GetType(scriptNamespace + "." + scriptClass);
+            Benchmark.EndTiming("Script Assembly Type Lookup");
+
             return (T)Activator.CreateInstance(classType);
         }
         /*
