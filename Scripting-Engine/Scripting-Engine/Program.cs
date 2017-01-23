@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LeagueSandbox.GameServer.Logic.GameObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,6 +26,12 @@ namespace Scripting_Engine
 
             ISpellScript ezrealEObject = scriptingEngine.createObject<ISpellScript>("Ezreal", "EObject");
             ezrealEObject.onStartCasting(null);
+            
+            object ezrealEObjectGeneric = scriptingEngine.createObject<object>("Ezreal", "EObject");
+            CSharpScriptEngine.runFunctionOnObject(ezrealEObjectGeneric, "onStartCasting", new object[] { null });
+
+            Action<Champion> onObjectStartCasting = CSharpScriptEngine.getObjectMethod<Action<Champion>>(ezrealEObjectGeneric, "onStartCasting");
+            onObjectStartCasting(null);
 
             Benchmark.EndTiming("Program Execution Time");
 

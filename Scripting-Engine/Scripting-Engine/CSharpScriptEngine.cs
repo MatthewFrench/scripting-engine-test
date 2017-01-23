@@ -84,7 +84,8 @@ namespace Scripting_Engine
             Benchmark.EndTiming("Script Loading");
             
             string assemblyName = Path.GetRandomFileName();
-            
+
+            Benchmark.StartTiming("Reference Loading");
             List<MetadataReference> references = new List<MetadataReference>();
             foreach (Assembly a in System.AppDomain.CurrentDomain.GetAssemblies())
             {
@@ -92,7 +93,8 @@ namespace Scripting_Engine
             }
             //Now add game reference
             references.Add(MetadataReference.CreateFromFile(typeof(Game).Assembly.Location));
-            
+            Benchmark.EndTiming("Reference Loading");
+
             var op = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
                 .WithOptimizationLevel(OptimizationLevel.Release).WithConcurrentBuild(true);
             CSharpCompilation compilation = CSharpCompilation.Create(
@@ -163,6 +165,22 @@ namespace Scripting_Engine
             Benchmark.EndTiming("Script Assembly Type Lookup");
 
             return (T)Activator.CreateInstance(classType);
+        }
+        public static object runFunctionOnObject(object obj, String method, params object[] args)
+        {
+            return obj.GetType().InvokeMember(method,
+                            BindingFlags.Default | BindingFlags.InvokeMethod,
+                            null,
+                            obj,
+                            args);
+        }
+        public static T getObjectMethod<T>(object obj, String scriptFunction)
+        {
+            Type classType = obj.GetType();
+            MethodInfo desiredFunction = classType.GetMethod(scriptFunction, BindingFlags.Public | BindingFlags.Instance);
+
+            Type typeParameterType = typeof(T);
+            return (T)((object)Delegate.CreateDelegate(typeParameterType, obj, desiredFunction));
         }
         /*
         public void runFunction(String scriptNamespace, String scriptClass, String scriptFunction, params object[] args)
