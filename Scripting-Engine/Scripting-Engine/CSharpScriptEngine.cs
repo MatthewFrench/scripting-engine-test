@@ -66,7 +66,6 @@ namespace Scripting_Engine
         //Takes about 300 milliseconds for a single script
         public void load(List<string> scriptLocations)
         {
-            Benchmark.StartTiming("Load Function");
             StringBuilder scriptBuilder = new StringBuilder();
             Parallel.For(0, scriptLocations.Count, (i)=> {
                 using (StreamReader sr = new StreamReader(scriptLocations[i]))
@@ -144,8 +143,7 @@ namespace Scripting_Engine
                 }
             }
 
-
-            Benchmark.EndTiming("Load Function");
+            
         }
         public T getStaticMethod<T>(String scriptNamespace, String scriptClass, String scriptFunction)
         {
