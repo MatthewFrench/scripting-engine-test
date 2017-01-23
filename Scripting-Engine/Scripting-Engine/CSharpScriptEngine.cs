@@ -79,8 +79,15 @@ namespace Scripting_Engine
                 }
             });
             Benchmark.Log("Compiling script: " + scriptBuilder.ToString());
-            Tuple<List<string>, string> scriptHoist = QuickUsings.Hoist(scriptBuilder.ToString());
-            SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(scriptHoist.Item2);
+
+            String script = SlowUsing.SortUsing(scriptBuilder.ToString());
+
+            System.IO.File.WriteAllText(@"Temporary Script.txt", script);
+
+            //Tuple<List<string>, string> scriptHoist = QuickUsings.Hoist(scriptBuilder.ToString());
+
+            Benchmark.Log("Hoisted script: " + script);
+            SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(script);
             string assemblyName = Path.GetRandomFileName();
             
             List<MetadataReference> references = new List<MetadataReference>();

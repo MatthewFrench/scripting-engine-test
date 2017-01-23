@@ -30,10 +30,10 @@ namespace Scripting_Engine
         }
         static public void Log(string text)
         {
-            Task t = Task.Factory.StartNew(() =>
-            {
+            //Task t = Task.Factory.StartNew(() =>
+            //{
                 Console.WriteLine(text);
-            });
+            //});
         }
     }
 }
