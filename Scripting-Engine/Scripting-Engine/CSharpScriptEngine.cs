@@ -52,10 +52,10 @@ namespace Scripting_Engine
 
             using (var ms = new MemoryStream())
             {
-                using (var pdb = new MemoryStream())
-                {
-                    EmitResult result = compilation.Emit(ms, pdb);
-                }
+                ///using (var pdb = new MemoryStream())
+                //{
+                EmitResult result = compilation.Emit(ms);//, pdb);
+                //}
             }
             Benchmark.EndTiming("Prepare Compiler");
         }
@@ -97,7 +97,8 @@ namespace Scripting_Engine
             //Now add game reference
             references.Add(MetadataReference.CreateFromFile(typeof(Game).Assembly.Location));
             
-            var op = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
+            var op = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
+                .WithOptimizationLevel(OptimizationLevel.Release).WithConcurrentBuild(true);
             CSharpCompilation compilation = CSharpCompilation.Create(
                 assemblyName,
                 syntaxTrees: new[] { syntaxTree },
