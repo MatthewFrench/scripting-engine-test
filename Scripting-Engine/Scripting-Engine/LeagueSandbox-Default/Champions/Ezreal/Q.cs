@@ -6,17 +6,18 @@ using System.Threading.Tasks;
 using System.Numerics;
 using LeagueSandbox.GameServer.Logic.GameObjects;
 using LeagueSandbox.GameServer.Logic.API;
+using Scripting_Engine;
 
 namespace Ezreal
 {
-    class Q
+    public class Q
     {
-        static void onStartCasting(Champion owner)
+        public static void onStartCasting(Champion owner)
         {
             ApiFunctionManager.AddParticleTarget(owner, "ezreal_bow.troy", owner, 1, "L_HAND");
 
         }
-        static void onFinishCasting(Champion owner, Spell spell)
+        public static void onFinishCasting(Champion owner, Spell spell)
         {
             Vector2 current = new Vector2(owner.X, owner.Y);
             Vector2 to = Vector2.Normalize(new Vector2(spell.X, spell.Y) - current);
@@ -25,7 +26,7 @@ namespace Ezreal
 
             spell.AddProjectile("EzrealMysticShotMissile", trueCoords.X, trueCoords.Y);
         }
-        static void applyEffects(Champion owner, Spell spell, Projectile projectile)
+        public static void applyEffects(Champion owner, Spell spell, Projectile projectile)
         {
             float AD = owner.GetStats().AttackDamage.Total * 1.1f;
             float AP = owner.GetStats().AbilityPower.Total * 0.4f;
@@ -37,6 +38,12 @@ namespace Ezreal
             spell.LowerCooldown(3, 1);
             projectile.setToRemove();
         }
-        static void onUpdate(double diff) { }
+        public static void onUpdate(double diff) {
+            Benchmark.Log("Hello Benchmark from Ezreal's Q");
+        }
+        public static double fakeFunc()
+        {
+            return 5.0;
+        }
     }
 }

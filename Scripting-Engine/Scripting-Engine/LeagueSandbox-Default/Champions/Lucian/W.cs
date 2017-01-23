@@ -23,8 +23,8 @@ namespace Lucian
         }
         static void applyEffects(Champion owner, Spell spell, Projectile projectile)
         {
-            float damage = 20 + (spellLevel * 40) + owner.GetStats().AbilityPower.Total * 0.9;
-            dealMagicalDamage(damage);
+            //float damage = 20 + (spellLevel * 40) + owner.GetStats().AbilityPower.Total * 0.9;
+            //dealMagicalDamage(damage);
         }
         static void onUpdate(double diff) { }
     }
