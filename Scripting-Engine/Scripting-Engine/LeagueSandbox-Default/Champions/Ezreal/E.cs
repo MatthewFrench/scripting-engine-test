@@ -13,13 +13,9 @@
      {
          public static void onStartCasting(Champion owner, Spell spell, Unit target)
          {
-
-            
-        
          }
          public static void onFinishCasting(Champion owner, Spell spell, Unit target)
          {
-
             var current = new Vector2(owner.X, owner.Y);
             var to = new Vector2(spell.X, spell.Y) - current;
             Vector2 trueCoords;
@@ -35,7 +31,7 @@
             }
             ApiFunctionManager.AddParticle(owner, "Ezreal_arcaneshift_cas.troy", owner.X, owner.Y);
             spell.Teleport(owner, trueCoords.X, trueCoords.Y);
-            ApiFunctionManager.AddParticleTarget(owner, "Ezreal_arcaneshift_flash.troy", owner );
+            ApiFunctionManager.AddParticleTarget(owner, "Ezreal_arcaneshift_flash.troy", owner);
             Unit target2 = null;
             List<Unit> units = ApiFunctionManager.GetUnitsInRange(owner, 700, true);
 
@@ -51,21 +47,20 @@
                     }
                 }
             }
-            if(!ApiFunctionManager.UnitIsTurret(target2))
+            if (target2 != null)
             {
-                spell.AddProjectileTarget("EzrealArcaneShiftMissile", target2);
+                if(!ApiFunctionManager.UnitIsTurret(target2))
+                {
+                    spell.AddProjectileTarget("EzrealArcaneShiftMissile", target2);
+                }
             }
-        
-         }
+        }
          public static void applyEffects(Champion owner, Unit target, Spell spell, Projectile projectile)
          {
-
             owner.dealDamageTo(target, 25f + spell.Level * 50f + owner.GetStats().AbilityPower.Total * 0.75f, DamageType.DAMAGE_TYPE_MAGICAL, DamageSource.DAMAGE_SOURCE_SPELL, false);
             projectile.setToRemove();
-        
          }
          public static void onUpdate(double diff) {
-          
          }
      }
  }

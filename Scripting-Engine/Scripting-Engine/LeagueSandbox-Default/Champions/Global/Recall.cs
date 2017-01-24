@@ -8,21 +8,22 @@ using LeagueSandbox.GameServer.Logic.GameObjects;
 using LeagueSandbox.GameServer.Logic.API;
 namespace Global
 {
-    class Recall
+    public static class Recall
     {
-        static void onStartCasting()
+        public static void onStartCasting(Champion owner, Spell spell, Unit target)
         {
         
         }
-        static void onFinishCasting()
+        public static void onFinishCasting(Champion owner, Spell spell, Unit target)
+        {
+            //addBuff("Recall", 8, owner, owner)
+            ApiFunctionManager.AddParticleTarget(owner, "TeleportHome.troy", owner);
+        }
+        public static void applyEffects(Champion owner, Unit target, Spell spell, Projectile projectile)
         {
         
         }
-        static void applyEffects()
-        {
-        
-        }
-        static void onUpdate(double diff)
+        public static void onUpdate(double diff)
         {
         
         }
