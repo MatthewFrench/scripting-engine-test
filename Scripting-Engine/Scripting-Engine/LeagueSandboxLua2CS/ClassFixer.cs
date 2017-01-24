@@ -71,23 +71,23 @@ namespace "+ championName + @"
                     {
 
                          locationOfFunctionStart = oldScript.IndexOf("{", oldScript.IndexOf("onStartCasting")) + 1;
-                        innerOnStartCasting = oldScript.Substring(locationOfFunctionStart, oldScript.IndexOf("}", locationOfFunctionStart) - locationOfFunctionStart);
+                        innerOnStartCasting = oldScript.Substring(locationOfFunctionStart, FindPositionOfFirstUnmatchedBracket(oldScript, locationOfFunctionStart) - locationOfFunctionStart);
 
                     }
                     if (oldScript.IndexOf("onFinishCasting") != -1)
                     {
                         locationOfFunctionStart = oldScript.IndexOf("{", oldScript.IndexOf("onFinishCasting")) + 1;
-                        innerOnFinishCasting = oldScript.Substring(locationOfFunctionStart, oldScript.IndexOf("}", locationOfFunctionStart) - locationOfFunctionStart);
+                        innerOnFinishCasting = oldScript.Substring(locationOfFunctionStart, FindPositionOfFirstUnmatchedBracket(oldScript, locationOfFunctionStart) - locationOfFunctionStart);
                     }
                     if (oldScript.IndexOf("applyEffects") != -1)
                     {
                         locationOfFunctionStart = oldScript.IndexOf("{", oldScript.IndexOf("applyEffects")) + 1;
-                        innerApplyEffects = oldScript.Substring(locationOfFunctionStart, oldScript.IndexOf("}", locationOfFunctionStart) - locationOfFunctionStart);
+                        innerApplyEffects = oldScript.Substring(locationOfFunctionStart, FindPositionOfFirstUnmatchedBracket(oldScript, locationOfFunctionStart) - locationOfFunctionStart);
                     }
                     if (oldScript.IndexOf("onUpdate") != -1)
                     {
                         locationOfFunctionStart = oldScript.IndexOf("{", oldScript.IndexOf("onUpdate")) + 1;
-                        innerOnUpdate = oldScript.Substring(locationOfFunctionStart, oldScript.IndexOf("}", locationOfFunctionStart) - locationOfFunctionStart);
+                        innerOnUpdate = oldScript.Substring(locationOfFunctionStart, FindPositionOfFirstUnmatchedBracket(oldScript, locationOfFunctionStart) - locationOfFunctionStart);
                     }
                      fixedScript = @"using System;
  using System.Collections.Generic;
@@ -102,21 +102,13 @@ namespace "+ championName + @"
  {
      public class " + spellName + @"
      {
-         public static void onStartCasting(Champion owner)
-         {
-" + innerOnStartCasting + @"
-         }
-         public static void onFinishCasting(Champion owner, Spell spell)
-         {
-" + innerOnFinishCasting + @"
-         }
+         public static void onStartCasting(Champion owner, Spell spell, Unit target)
+         {" + innerOnStartCasting + @"}
+         public static void onFinishCasting(Champion owner, Spell spell, Unit target)
+         {" + innerOnFinishCasting + @"}
          public static void applyEffects(Champion owner, Unit target, Spell spell, Projectile projectile)
-         {
-" + innerApplyEffects + @"
-         }
-         public static void onUpdate(double diff) {
-       " + innerOnUpdate + @"  
-         }
+         {" + innerApplyEffects + @"}
+         public static void onUpdate(double diff) {" + innerOnUpdate + @"}
      }
  }";
                 }
@@ -128,6 +120,36 @@ namespace "+ championName + @"
                 System.IO.File.WriteAllText(fileLocation, fixedScript);
             }
             
+        }
+
+        private int FindPositionOfFirstUnmatchedBracket(string inputString, int afterLocation)
+        {
+            Stack<char> stack = new Stack<char>();
+            int pos = -1;
+
+            for (int i = afterLocation; i < inputString.Length; i++)
+            {
+                char c = inputString[i];
+
+                if (c == '{')
+                {
+                    stack.Push(c);
+                }
+                else if (c == '}')
+                {
+                    if (stack.Count > 0)
+                    {
+                        stack.Pop();
+                    }
+                    else
+                    {
+                        pos = i;
+                        break;
+                    }
+                }
+            }
+
+            return pos;
         }
     }
 }

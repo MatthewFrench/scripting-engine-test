@@ -1,30 +1,19 @@
+using LeagueSandbox.GameServer.Logic.GameObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Numerics;
-using LeagueSandbox.GameServer.Logic.GameObjects;
-using LeagueSandbox.GameServer.Logic.API;
+
 namespace Riven
 {
-    class Passive
+    public class Passive
     {
-        static void onStartCasting()
-        {
-        
-        }
-        static void onFinishCasting()
-        {
-        
-        }
-        static void applyEffects()
-        {
-        
-        }
-        static void onUpdate(double diff)
-        {
-        
-        }
+        public static void onUpdate(double diff) { }
+        public static void onDamageTaken(Unit attacker, float damage, DamageType type, DamageSource source) { }
+        public static void onAutoAttack(Unit target) { }
+        public static void onDealDamage(Unit target, float damage, DamageType damageType, DamageSource source) { }
+        public static void onSpellCast(float x, float y, Spell slot, Unit target) { }
+        public static void onDie(Unit killer) { }
     }
 }

@@ -119,7 +119,10 @@ namespace Scripting_Engine
 
                         foreach (Diagnostic diagnostic in failures)
                         {
-                            Console.Error.WriteLine("{0}: {1}", diagnostic.Id, diagnostic.GetMessage());
+                            Location loc = diagnostic.Location;
+                            //loc.SourceTree.ToString
+                            //loc.ToString
+                            Console.Error.WriteLine("{0}: {1} with location: {2}", diagnostic.Id, diagnostic.GetMessage(), loc.SourceTree.ToString());
                         }
                     }
                     else

@@ -1,23 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Numerics;
-using LeagueSandbox.GameServer.Logic.GameObjects;
-using LeagueSandbox.GameServer.Logic.API;
+using System;
+ using System.Collections.Generic;
+ using System.Linq;
+ using System.Text;
+ using System.Threading.Tasks;
+ using System.Numerics;
+ using LeagueSandbox.GameServer.Logic.GameObjects;
+ using LeagueSandbox.GameServer.Logic.API;
 
-namespace Annie
-{
-    class Q
-    {
-        static void onStartCasting() { }
-        static void onFinishCasting(Unit castTarget, Spell spell)
-        {
-            spell.AddProjectileTarget("Disintegrate", castTarget, false);
-        }
-        static void applyEffects(Champion owner, Spell spell, Unit castTarget, Projectile projectile)
-        {
+ namespace Annie
+ {
+     public class Q
+     {
+         public static void onStartCasting(Champion owner, Spell spell, Unit target)
+         {
+ 
+         }
+         public static void onFinishCasting(Champion owner, Spell spell, Unit target)
+         {
+
+            spell.AddProjectileTarget("Disintegrate", target, false);
+        
+         }
+         public static void applyEffects(Champion owner, Unit target, Spell spell, Projectile projectile)
+         {
+            Unit castTarget = target;
             float AP = owner.GetStats().AbilityPower.Total * 0.8f;
             float damage = 45 + (spell.Level * 35) + AP;
 
@@ -41,7 +47,10 @@ namespace Annie
                 }
             }
             projectile.setToRemove();
-        }
-        static void onUpdate(double diff) { }
-    }
-}
+        
+         }
+         public static void onUpdate(double diff) {
+          
+         }
+     }
+ }

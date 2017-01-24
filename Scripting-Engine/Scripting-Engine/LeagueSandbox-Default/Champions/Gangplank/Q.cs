@@ -1,24 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Numerics;
-using LeagueSandbox.GameServer.Logic.GameObjects;
-using LeagueSandbox.GameServer.Logic.API;
-namespace Gangplank
-{
-    class Q
-    {
-        static void onStartCasting() { }
-        static void onFinishCasting(Unit castTarget, Spell spell)
-        {
-            Unit target = castTarget;
+using System;
+ using System.Collections.Generic;
+ using System.Linq;
+ using System.Text;
+ using System.Threading.Tasks;
+ using System.Numerics;
+ using LeagueSandbox.GameServer.Logic.GameObjects;
+ using LeagueSandbox.GameServer.Logic.API;
+
+ namespace Gangplank
+ {
+     public class Q
+     {
+         public static void onStartCasting(Champion owner, Spell spell, Unit target)
+         {
+ 
+         }
+         public static void onFinishCasting(Champion owner, Spell spell, Unit target)
+         {
+            
             spell.AddProjectileTarget("pirate_parley_mis", target, false);
-        }
-        static void applyEffects(Champion owner, Spell spell, Unit castTarget, Projectile projectile)
-        {
-            Unit target = castTarget;
+        
+         }
+         public static void applyEffects(Champion owner, Unit target, Spell spell, Projectile projectile)
+         {
+
+            Unit castTarget = target;
             float damage = owner.GetStats().AttackDamage.Total + -5 + (25 * spell.Level);
             float newGold = owner.GetStats().Gold + 3 + (1 * spell.Level);
             if(target != null && !ApiFunctionManager.IsDead(target))
@@ -34,7 +40,10 @@ namespace Gangplank
                 }
                 projectile.setToRemove();
             }
-        }
-        static void onUpdate(double diff) { }
-    }
-}
+        
+         }
+         public static void onUpdate(double diff) {
+          
+         }
+     }
+ }

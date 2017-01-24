@@ -1,30 +1,38 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Numerics;
-using LeagueSandbox.GameServer.Logic.GameObjects;
-using LeagueSandbox.GameServer.Logic.API;
-namespace Caitlyn
-{
-    class E
-    {
-        static void onStartCasting()
-        {
+ using System.Collections.Generic;
+ using System.Linq;
+ using System.Text;
+ using System.Threading.Tasks;
+ using System.Numerics;
+ using LeagueSandbox.GameServer.Logic.GameObjects;
+ using LeagueSandbox.GameServer.Logic.API;
+
+ namespace Caitlyn
+ {
+     public class E
+     {
+         public static void onStartCasting(Champion owner, Spell spell, Unit target)
+         {
+
         
-        }
-        static void onFinishCasting()
-        {
         
-        }
-        static void applyEffects()
-        {
+         }
+         public static void onFinishCasting(Champion owner, Spell spell, Unit target)
+         {
+
         
-        }
-        static void onUpdate(double diff)
-        {
         
-        }
-    }
-}
+         }
+         public static void applyEffects(Champion owner, Unit target, Spell spell, Projectile projectile)
+         {
+
+        
+        
+         }
+         public static void onUpdate(double diff) {
+       
+        
+          
+         }
+     }
+ }

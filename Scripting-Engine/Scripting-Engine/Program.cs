@@ -21,8 +21,9 @@ namespace Scripting_Engine
             Action<double> ezrealQOnUpdate = scriptingEngine.getStaticMethod<Action<double>>("Ezreal", "Q", "onUpdate");
             ezrealQOnUpdate( 50.0 );
 
-            Func<double> ezrealQFakeFunction = scriptingEngine.getStaticMethod<Func<double>>("Ezreal", "Q", "fakeFunc");
-            double number = ezrealQFakeFunction();
+            //Removed function
+            //Func<double> ezrealQFakeFunction = scriptingEngine.getStaticMethod<Func<double>>("Ezreal", "Q", "fakeFunc");
+            //double number = ezrealQFakeFunction();
 
             ISpellScript ezrealEObject = scriptingEngine.createObject<ISpellScript>("Ezreal", "EObject");
             ezrealEObject.onStartCasting(null);
